@@ -1,0 +1,135 @@
+/* Styles appliqués à la page register*/
+.register-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.register-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px #e0e0e0;
+    padding: 32px 32px 24px 32px;
+}
+
+.register-container h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 28px;
+}
+
+.register-container form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.register-container .form-group {
+    flex: 1 1 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.register-container .form-group-full {
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-container label {
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.register-container input,
+select {
+    padding: 10px 8px;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    background: #fafafa;
+    margin-bottom: 8px;
+    font-size: 1em;
+    transition: border-color 0.2s;
+}
+
+.register-container input:focus,
+select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.register-container button[type="submit"] {
+    width: 100%;
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.register-container button[type="submit"]:hover {
+    background: #388E3C;
+}
+
+.register-container .register-link {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.register-container .register-link a {
+    color: #64B5F6;
+    text-decoration: none;
+}
+
+.register-container .register-link a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .register-container form {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .register-container .form-group,
+    .form-group-full {
+        flex: 1 1 100%;
+    }
+}
+
+/* Styles pour les messages flash */
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    /* Rouge pâle */
+    color: #721c24;
+    /* Rouge foncé */
+    border: 1px solid #f5c6cb;
+}
+
+.message.success {
+    background-color: #d4edda;
+    /* Vert pâle */
+    color: #155724;
+    /* Vert foncé */
+    border: 1px solid #c3e6cb;
+}
