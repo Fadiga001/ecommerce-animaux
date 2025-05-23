@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gérer les Produits | Tableau de Bord Vendeur</title>
+    <title>Gérer les Catégories | Tableau de Bord Vendeur</title>
     <!-- Inclure Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Lien vers votre CSS personnalisé -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/public/css/style.css">
     <style>
-    /* Styles spécifiques si nécessaire */
     body {
         background-color: #f8f9fa;
     }
@@ -51,12 +50,6 @@
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-
-    .product-image-small {
-        width: 50px;
-        height: auto;
-        border-radius: 4px;
-    }
     </style>
 </head>
 
@@ -69,8 +62,8 @@
                 <h2 class="text-light mb-4">Menu Vendeur</h2>
                 <nav class="nav flex-column">
                     <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/dashboard">Tableau de Bord</a>
-                    <a class="nav-link active" href="<?php echo BASE_URL; ?>/vendor/products">Gérer les catégories</a>
-                    <a class="nav-link active" href="<?php echo BASE_URL; ?>/vendor/products">Gérer les Produits</a>
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/categories/indexCategorie">Gérer les Catégories</a>
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/products">Gérer les Produits</a>
                     <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/orders">Commandes Reçues</a>
                     <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/profile">Mon Profil</a>
                     <hr class="bg-secondary my-3">
@@ -80,7 +73,7 @@
 
             <!-- Contenu principal (colonne droite) -->
             <div class="col-md-9 col-lg-10 content-area">
-                <h1>Gérer les Produits</h1>
+                <h1>Gérer les Catégories</h1>
 
                 <?php
                 // Afficher les messages flash (erreur ou succès)
@@ -95,60 +88,38 @@
                 ?>
 
                 <div class="mb-3 text-end">
-                    <a href="<?php echo BASE_URL; ?>/vendor/products/create" class="btn btn-success">Ajouter un nouveau
-                        produit</a>
+                    <a href="<?php echo BASE_URL; ?>/vendor/categories/create" class="btn btn-success">Ajouter une nouvelle catégorie</a>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Image</th>
                                 <th>Nom</th>
-                                <th>Prix</th>
-                                <th>Stock</th>
-                                <th>Catégorie</th>
+                                <th>Description</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            // $products est la variable passée par le contrôleur
-                            if (empty($products)) {
-                                echo '<tr><td colspan="6" class="text-center">Aucun produit trouvé.</td></tr>';
+                            // $categories est la variable passée par le contrôleur
+                            if (empty($categories)) {
+                                echo '<tr><td colspan="3" class="text-center">Aucune catégorie trouvée.</td></tr>';
                             } else {
-                                foreach ($products as $product) {
+                                foreach ($categories as $category) {
                                     ?>
                             <tr>
+                                <td><?php echo htmlspecialchars($category['nom']); ?></td>
+                                <td><?php echo htmlspecialchars($category['description']); ?></td>
                                 <td>
-                                    <?php if (!empty($product['image_path'])): ?>
-                                    <img src="<?php echo BASE_URL . '/public/uploads/products/' . htmlspecialchars($product['image_path']); ?>"
-                                        alt="Image Produit" class="product-image-small">
-                                    <?php else: ?>
-                                    Pas d'image
-                                    <?php endif; ?>
-                                </td>
-                                <td><?php echo htmlspecialchars($product['name']); ?></td>
-                                <td><?php echo htmlspecialchars(number_format($product['price'], 2, ',', ' ')); ?> €
-                                </td>
-                                <td>
-                                    <?php
-                                                echo htmlspecialchars($product['stock']);
-                                                if ($product['stock'] < 10) { // Exemple de seuil bas
-                                                    echo ' <span class="badge bg-warning">Faible</span>';
-                                                }
-                                            ?>
-                                </td>
-                                <td>[Nom Catégorie]</td> <!-- À remplacer par le nom réel de la catégorie -->
-                                <td>
-                                    <a href="<?php echo BASE_URL; ?>/vendor/products/edit?id=<?php echo htmlspecialchars($product['id']); ?>"
+                                    <a href="<?php echo BASE_URL; ?>/vendor/categories/edit?id=<?php echo htmlspecialchars($category['id']); ?>"
                                         class="btn btn-sm btn-primary me-1">Modifier</a>
-                                    <form action="<?php echo BASE_URL; ?>/vendor/products/delete" method="POST"
+                                    <form action="<?php echo BASE_URL; ?>/vendor/categories/delete" method="POST"
                                         style="display:inline;">
-                                        <input type="hidden" name="product_id"
-                                            value="<?php echo htmlspecialchars($product['id']); ?>">
+                                        <input type="hidden" name="category_id"
+                                            value="<?php echo htmlspecialchars($category['id']); ?>">
                                         <button type="submit" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">Supprimer</button>
+                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">Supprimer</button>
                                     </form>
                                 </td>
                             </tr>

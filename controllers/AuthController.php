@@ -34,6 +34,8 @@
                     // Rediriger en fonction du rôle
                     if ($user['role'] === 'vendeur') {
                          header('Location: ' . BASE_URL . '/vendor/dashboard'); // Rediriger vers le tableau de bord vendeur
+                    } elseif ($user['role'] === 'admin') {
+                         header('Location: ' . BASE_URL . '/admin/dashboard-admin'); // Rediriger vers le tableau de bord admin
                     } else {
                          header('Location: ' . BASE_URL . '/login'); // Rediriger vers la page d'accueil client par défaut
                     } // Rediriger vers la page d'accueil/tableau de bord
@@ -58,12 +60,13 @@
 
         // Affiche le formulaire d'inscription et traite l'inscription
         public function register() {
-
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $nom = trim($_POST['nom'] ?? ''); // Nettoyer l'entrée
                 $email = trim($_POST['email'] ?? ''); // Nettoyer l'entrée
                 $mot_de_passe = $_POST['mot_de_passe'] ?? '';
-                $role = $_POST['role'] ?? '';
+                // Vérifier si l'utilisateur est un admin
+                $is_admin = isset($_POST['is_admin']) ? 1 : 0;
+                $role = $is_admin ? 'admin' : $_POST['role'] ?? '';
                 $adresse = trim($_POST['adresse'] ?? ''); // Nettoyer l'entrée
                 $telephone = trim($_POST['telephone'] ?? ''); // Nettoyer l'entrée
 
@@ -102,9 +105,56 @@
                 unset($_SESSION['flash_success']); // Supprimer le message après l'avoir lu
             }
 
-
             // Inclure la vue d'inscription
             require __DIR__ . '/../views/auth/register.php';
+        }
+
+        // Affiche le formulaire d'inscription pour les admins
+        public function registerAdmin() {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $nom = trim($_POST['nom'] ?? ''); // Nettoyer l'entrée
+                $email = trim($_POST['email'] ?? ''); // Nettoyer l'entrée
+                $mot_de_passe = $_POST['mot_de_passe'] ?? '';;
+                $role = 'admin';
+                $adresse = trim($_POST['adresse'] ?? ''); // Nettoyer l'entrée
+                $telephone = trim($_POST['telephone'] ?? ''); // Nettoyer l'entrée
+
+                // Validation basique dans le contrôleur
+                if (empty($nom) || empty($email) || empty($mot_de_passe)) {
+                    $_SESSION['flash_error'] = "Tous les champs obligatoires (Nom, E-mail, Mot de passe, Rôle) doivent être remplis.";
+                    header('Location: ' . BASE_URL . '/register-admin'); // Rediriger vers le formulaire avec l'erreur
+                    exit;
+                }
+
+                $userModel = new User();
+                // Passer null pour les champs optionnels vides si le modèle l'attend
+                $adresse = empty($adresse) ? null : $adresse;
+                $telephone = empty($telephone) ? null : $telephone;
+
+                $result = $userModel->register($nom, $email, $mot_de_passe, $role, $adresse, $telephone);
+
+                if ($result['success']) {
+                    $_SESSION['flash_success'] = $result['message'];
+                    header('Location: ' . BASE_URL . '/login'); // Rediriger vers la page de connexion après l'inscription réussie
+                    exit;
+                } else {
+                    $_SESSION['flash_error'] = $result['message'];
+                    header('Location: ' . BASE_URL . '/register-admin'); // Rediriger vers le formulaire avec l'erreur
+                    exit;
+                }
+            }
+
+            // Récupérer les messages flash s'ils existent pour les afficher dans la vue
+            if (isset($_SESSION['flash_error'])) {
+                $error = $_SESSION['flash_error'];
+                unset($_SESSION['flash_error']); // Supprimer le message après l'avoir lu
+            }
+             if (isset($_SESSION['flash_success'])) {
+                $success = $_SESSION['flash_success'];
+                unset($_SESSION['flash_success']); // Supprimer le message après l'avoir lu
+            }
+
+            require __DIR__ . '/../views/auth/register-admin.php';
         }
 
         // Déconnexion

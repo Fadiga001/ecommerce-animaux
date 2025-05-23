@@ -106,6 +106,7 @@
                 <h2 class="text-light mb-4">Menu Vendeur</h2>
                 <nav class="nav flex-column">
                     <a class="nav-link active" href="<?php echo BASE_URL; ?>/vendor/dashboard">Tableau de Bord</a>
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/categories/indexCategorie">Gérer les Catégories</a>
                     <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/products">Gérer les Produits</a>
                     <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/orders">Commandes Reçues</a>
                     <a class="nav-link" href="<?php echo BASE_URL; ?>/vendor/profile">Mon Profil</a>

@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../core/Database.php';
+
 class Product {
     private $db; // Instance de votre connexion à la base de données
 
